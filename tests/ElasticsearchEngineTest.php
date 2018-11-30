@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Database\Eloquent\Collection;
 use Laravel\Scout\Builder;
-use ScoutEngines\Elasticsearch\ElasticsearchEngine;
+use PHPUnit\Framework\TestCase;
+use Illuminate\Database\Eloquent\Collection;
+use Apptree\Elasticsearch\ElasticsearchEngine;
 
-class ElasticsearchEngineTest extends PHPUnit_Framework_TestCase
+class ElasticsearchEngineTest extends TestCase
 {
     public function tearDown()
     {
@@ -19,7 +20,7 @@ class ElasticsearchEngineTest extends PHPUnit_Framework_TestCase
                 [
                     'update' => [
                         '_id' => 1,
-                        '_index' => 'scout',
+                        '_index' => 'table',
                         '_type' => 'table',
                     ]
                 ],
@@ -30,7 +31,7 @@ class ElasticsearchEngineTest extends PHPUnit_Framework_TestCase
             ]
         ]);
 
-        $engine = new ElasticsearchEngine($client, 'scout');
+        $engine = new ElasticsearchEngine($client);
         $engine->update(Collection::make([new ElasticsearchEngineTestModel]));
     }
 
@@ -42,14 +43,14 @@ class ElasticsearchEngineTest extends PHPUnit_Framework_TestCase
                 [
                     'delete' => [
                         '_id' => 1,
-                        '_index' => 'scout',
+                        '_index' => 'table',
                         '_type' => 'table',
                     ]
                 ],
             ]
         ]);
 
-        $engine = new ElasticsearchEngine($client, 'scout');
+        $engine = new ElasticsearchEngine($client);
         $engine->delete(Collection::make([new ElasticsearchEngineTestModel]));
     }
 
@@ -57,7 +58,7 @@ class ElasticsearchEngineTest extends PHPUnit_Framework_TestCase
     {
         $client = Mockery::mock('Elasticsearch\Client');
         $client->shouldReceive('search')->with([
-            'index' => 'scout',
+            'index' => 'table',
             'type' => 'table',
             'body' => [
                 'query' => [
@@ -75,8 +76,8 @@ class ElasticsearchEngineTest extends PHPUnit_Framework_TestCase
             ]
         ]);
 
-        $engine = new ElasticsearchEngine($client, 'scout');
-        $builder = new Laravel\Scout\Builder(new ElasticsearchEngineTestModel, 'zonda');
+        $engine = new ElasticsearchEngine($client);
+        $builder = new Builder(new ElasticsearchEngineTestModel, 'zonda');
         $builder->where('foo', 1);
         $builder->where('bar', [1, 3]);
         $builder->orderBy('id', 'desc');
@@ -89,8 +90,8 @@ class ElasticsearchEngineTest extends PHPUnit_Framework_TestCase
         $client = Mockery::mock(\Elasticsearch\Client::class);
         $client->shouldReceive('search')->with('modified_by_callback');
 
-        $engine = new ElasticsearchEngine($client, 'scout');
-        $builder = new Laravel\Scout\Builder(
+        $engine = new ElasticsearchEngine($client);
+        $builder = new Builder(
             new ElasticsearchEngineTestModel(),
             'huayra',
             function (\Elasticsearch\Client $client, $query, $params) {
@@ -108,7 +109,7 @@ class ElasticsearchEngineTest extends PHPUnit_Framework_TestCase
     public function test_map_correctly_maps_results_to_models()
     {
         $client = Mockery::mock('Elasticsearch\Client');
-        $engine = new ElasticsearchEngine($client, 'scout');
+        $engine = new ElasticsearchEngine($client);
 
         $builder = Mockery::mock(Builder::class);
 

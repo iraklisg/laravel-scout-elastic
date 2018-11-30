@@ -2,14 +2,21 @@
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
-This package makes is the [Elasticsearch](https://www.elastic.co/products/elasticsearch) driver for Laravel Scout.
+This package makes provides an [Elasticsearch](https://www.elastic.co/products/elasticsearch) driver for Laravel Scout.
 
 ## Contents
 
+- [Requirement] (#requirement)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Credits](#credits)
 - [License](#license)
+
+## Requirement
+
+        "php": "~7.1.0",
+        "laravel/scout": "^5.0",
+        "elasticsearch/elasticsearch": "^5.0"
 
 ## Installation
 
@@ -59,6 +66,7 @@ Now you can use Laravel Scout as described in the [official documentation](https
 ## Credits
 
 - [Erick Tamayo](https://github.com/ericktamayo)
+- [Michael Slowik](https://github.com/sl0wik)
 - [All Contributors](../../contributors)
 
 ## License
